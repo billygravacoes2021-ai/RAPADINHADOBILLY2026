@@ -1,0 +1,302 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 330 100% 95%;
+    --foreground: 330 80% 25%;
+    --card: 0 0% 100%;
+    --card-foreground: 330 80% 25%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 330 80% 25%;
+    --primary: 330 100% 60%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 330 60% 90%;
+    --secondary-foreground: 330 80% 25%;
+    --muted: 330 30% 92%;
+    --muted-foreground: 330 30% 45%;
+    --accent: 145 65% 50%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 330 30% 85%;
+    --input: 330 30% 85%;
+    --ring: 330 100% 60%;
+    --radius: 0.875rem;
+    --chart-1: 330 100% 60%;
+    --chart-2: 330 80% 50%;
+    --chart-3: 330 60% 40%;
+    --chart-4: 145 65% 50%;
+    --chart-5: 145 65% 40%;
+  }
+
+  .dark {
+    --background: 330 30% 8%;
+    --foreground: 330 20% 95%;
+    --card: 330 30% 12%;
+    --card-foreground: 330 20% 95%;
+    --popover: 330 30% 12%;
+    --popover-foreground: 330 20% 95%;
+    --primary: 330 100% 60%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 330 30% 18%;
+    --secondary-foreground: 330 20% 95%;
+    --muted: 330 20% 18%;
+    --muted-foreground: 330 15% 60%;
+    --accent: 145 65% 50%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 72.2% 50.6%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 330 20% 20%;
+    --input: 330 20% 20%;
+    --ring: 330 100% 60%;
+    --chart-1: 330 100% 60%;
+    --chart-2: 330 80% 50%;
+    --chart-3: 330 60% 40%;
+    --chart-4: 145 65% 50%;
+    --chart-5: 145 65% 40%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: "Inter Variable", "Inter", system-ui, sans-serif;
+  }
+
+  button:not([disabled]),
+  [role="button"]:not([disabled]) {
+    cursor: pointer;
+  }
+}
+
+/* Marquee animation */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 14s linear infinite;
+}
+
+/* Scratch card styles */
+.scratch-card {
+  position: relative;
+  touch-action: none;
+  transform: scale(1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.scratch-card:hover {
+  transform: scale(1.03);
+}
+
+.scratch-card:active {
+  transform: scale(0.98);
+}
+
+.scratch-canvas {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  cursor: crosshair;
+}
+
+/* Shimmer effect on scratch cover */
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.scratch-canvas::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+  pointer-events: none;
+}
+
+/* Card reveal animation */
+@keyframes cardReveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) rotateY(90deg);
+  }
+  50% {
+    transform: scale(1.1) rotateY(0deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotateY(0deg);
+  }
+}
+
+.scratch-card.revealed {
+  animation: cardReveal 0.5s ease-out forwards;
+}
+
+/* Sparkle animation */
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1) rotate(180deg);
+  }
+}
+
+.sparkle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: white;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: sparkle 0.6s ease-out forwards;
+  box-shadow: 0 0 6px 2px rgba(255, 255, 255, 0.8);
+}
+
+/* Pulse animation for winning card */
+@keyframes winPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 20px 10px rgba(34, 197, 94, 0.3);
+  }
+}
+
+.scratch-card.winner {
+  animation: winPulse 1s ease-in-out infinite;
+}
+
+/* Floating particles */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-20px) rotate(180deg);
+  }
+  100% {
+    transform: translateY(-40px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.particle {
+  position: absolute;
+  pointer-events: none;
+  animation: float 1s ease-out forwards;
+}
+
+/* Scratch trail glow */
+@keyframes scratchGlow {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2);
+  }
+}
+
+.scratch-glow {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%);
+  pointer-events: none;
+  animation: scratchGlow 0.3s ease-out forwards;
+}
+
+/* Card entrance animation */
+@keyframes cardEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.scratch-card-enter {
+  animation: cardEntrance 0.4s ease-out forwards;
+}
+
+/* Lose shake animation */
+@keyframes loseShake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+  20%, 40%, 60%, 80% { transform: translateX(4px); }
+}
+
+.scratch-card.loser {
+  animation: loseShake 0.5s ease-in-out;
+}
+
+/* Women's Day Floating Animation */
+@keyframes floatWomensDay {
+  0% {
+    transform: translateY(100vh) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.animate-float-womens-day {
+  animation: floatWomensDay 8s ease-in-out infinite;
+}
+
+/* Women's Day Sparkle Animation */
+@keyframes sparkleWomens {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0.5) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2) rotate(180deg);
+  }
+}
+
+.animate-sparkle-womens {
+  animation: sparkleWomens 3s ease-in-out infinite;
+}
